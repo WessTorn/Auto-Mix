@@ -43,11 +43,13 @@ stock players_return_money () {
 	}
 }
 
-stock client_add_frag (id)
+stock client_add_frag (id) {
 	frags[id]++;
+}
 
-stock client_add_death (id)
+stock client_add_death (id) {
 	deaths[id]++;
+}
 
 stock client_reset_score (id) {
 	frags[id] = 0;
@@ -62,40 +64,50 @@ stock clients_reset_scores () {
 		client_reset_score(players[i]);
 }
 
-stock client_get_frags (id)
+stock client_get_frags (id) {
 	return frags[id];
+}
 
-stock client_get_deaths (id)
+stock client_get_deaths (id) {
 	return deaths[id];
+}
 
-stock teamtt_get_score ()
+stock teamtt_get_score () {
 	return winsTT;
+}
 
-stock teamct_get_score ()
+stock teamct_get_score () {
 	return winsCT;
+}
 
 stock teams_reset_scores () {
 	winsCT = 0;
 	winsTT = 0;
 }
 
-stock bool:teamct_is_winning ()
+stock bool:teamct_is_winning () {
 	return winsCT > winsTT;
+}
 
-stock bool:teamtt_is_winning ()
+stock bool:teamtt_is_winning () {
 	return winsTT > winsCT;
+}
 
-stock bool:teamtt_is_winner ()
-	return winsTT > (get_maxrounds()/2);
+stock bool:teamtt_is_winner () {
+	return winsTT > (get_maxrounds() / 2);
+}
 
-stock bool:teamct_is_winner ()
-	return winsCT > (get_maxrounds()/2);
+stock bool:teamct_is_winner () {
+	return winsCT > (get_maxrounds() / 2);
+}
 
-stock bool:teamtt_is_winner_ot ()
-	return winsTT > get_maxrounds()/2 + get_overtime_rounds()/2;
+stock bool:teamtt_is_winner_ot () {
+	return winsTT > get_maxrounds() / 2 + get_overtime_rounds() / 2;
+}
 
-stock bool:teamct_is_winner_ot ()
-	return winsCT > get_maxrounds()/2 + get_overtime_rounds()/2;
+stock bool:teamct_is_winner_ot () {
+	return winsCT > get_maxrounds() / 2 + get_overtime_rounds() / 2;
+}
 
 stock bool:is_scores_tie () {
 	static maxrounds;
@@ -127,7 +139,7 @@ stock teams_switch () {
 }
 
 static teams_switch_side () {
-	chat_print(0, "%L", LANG_SERVER, "PUG_TEAM_CHANGING")
+	chat_print(0, "%L", LANG_SERVER, "PUG_TEAM_CHANGING");
 
 	static playersTT[MAX_PLAYERS], countTT;
 	static playersCT[MAX_PLAYERS], countCT;
@@ -157,10 +169,5 @@ public print_team_scores() {
 	ctscore = teamct_get_score();
 	ttscore = teamtt_get_score();
 
-	if (teamct_is_winning())
-		chat_print(0, "%L", LANG_SERVER, "PUG_SCORE_WINNING", g_szTeams[TEAM_CT], ctscore, ttscore)
-	else if (teamtt_is_winning())
-		chat_print(0, "%L", LANG_SERVER, "PUG_SCORE_WINNING", g_szTeams[TEAM_TERRORIST], ttscore, ctscore)
-	else
-		chat_print(0, "%L", LANG_SERVER, "PUG_SCORE_TIED", ctscore, ttscore)
+	chat_print(0, "%L", LANG_SERVER, "PUG_SCORE_WINNING", ttscore, ctscore);
 }
