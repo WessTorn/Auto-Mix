@@ -8,7 +8,7 @@ stock dmg_addattack (victim, attacker, damage) {
 
 stock dmg_reset () {
 	for (new i; i < sizeof(user_dmg); i++) {
-		dmg_reset_user(i)
+		dmg_reset_user(i);
 	}
 }
 
@@ -29,16 +29,14 @@ stock dmgprint (id, bool:inchat=false) {
 
 		get_user_name(victim, name, charsmax(name));
 
-		console_print(id, "%L", LANG_SERVER, "PUG_DMG_INFO", name,
-					  user_dmg[victim][id], user_hits[victim][id])
+		console_print(id, "%L", LANG_SERVER, "PUG_DMG_INFO", name, user_dmg[victim][id], user_hits[victim][id]);
 
 		if (inchat)
-			chat_print(id, "%L", LANG_SERVER, "PUG_DMG_INFO", name,
-						  user_dmg[victim][id], user_hits[victim][id]);
+			chat_print(id, "%L", LANG_SERVER, "PUG_DMG_INFO", name, user_dmg[victim][id], user_hits[victim][id]);
 	}
 
 	if (!name[0])
-		console_print(id, "%L", LANG_SERVER, "PUG_DMG_DIDNTHURT")
+		console_print(id, "%L", LANG_SERVER, "PUG_DMG_DIDNTHURT");
 }
 
 stock rdmgprint (id) {
@@ -53,22 +51,22 @@ stock rdmgprint (id) {
 
 		get_user_name(attacker, name, charsmax(name));
 
-		console_print(id, "%L", LANG_SERVER, "PUG_RDMG_INFO", name,
-					  user_dmg[id][attacker], user_hits[id][attacker])
+		console_print(id, "%L", LANG_SERVER, "PUG_RDMG_INFO", name, user_dmg[id][attacker], user_hits[id][attacker]);
 	}
 	
 	if (!name[0])
-		console_print(id, "%L", LANG_SERVER, "PUG_RDMG_DIDNTHURT")
+		console_print(id, "%L", LANG_SERVER, "PUG_RDMG_DIDNTHURT");
 }
 
-public printdmg_task (args[])
+public printdmg_task (args[]) {
 	print_dmgrdmg(args[0]);
+}
 
 public print_dmgrdmg(const id) {
 	new const mode = get_cvar_num("pug_dmgmode");
 
-	console_print(id, "---------------------------------");
+	console_print(id, "+--");
 	dmgprint(id, (mode > 1));
 	rdmgprint(id);
-	console_print(id, "---------------------------------");
+	console_print(id, "+--");
 }
