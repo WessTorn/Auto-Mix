@@ -23,4 +23,4 @@ mp_startmoney 10000
 mp_timelimit 0
 sv_alltalk 2
 sv_timeout 60
-sv_restart 3
+sv_restart 1
