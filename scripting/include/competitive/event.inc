@@ -7,27 +7,27 @@
 #define HUD_HIDE_TIMER (1<<4)
 #define HUD_HIDE_MONEY (1<<5)
 
-static Float:nextPlayerThink[MAX_PLAYERS+1]
+static Float:nextPlayerThink[MAX_PLAYERS + 1];
 static bool:restarting;
 
 stock event_init () {
 	register_message(get_user_msgid("TeamScore"), "event_team_score");
 	register_message(get_user_msgid("ScoreInfo"), "event_player_score");
-
-	register_forward(FM_SetModel, "event_drop_item") 
+	
+	register_forward(FM_SetModel, "event_drop_item");
 	register_forward(FM_GetGameDescription, "event_game_description");
 	register_forward(FM_PlayerPostThink, "event_post_think");
 
-	register_event("Money", "event_money", "b")
-	register_event("Damage", "event_damage", "b", "2!0", "3=0", "4!0")
+	register_event("Money", "event_money", "b");
+	register_event("Damage", "event_damage", "b", "2!0", "3=0", "4!0");
 	register_event("DeathMsg", "event_death_player", "a", "1!0", "2!0");
-	register_event("TextMsg", "event_round_restart","a","2=#Game_will_restart_in")
-	register_logevent("event_ct_win", 6, "3=CTs_Win", "3=Target_Saved", "3=Bomb_Defused", "3=All_Hostages_Rescued")
-	register_logevent("event_tt_win" , 6, "3=Terrorists_Win", "3=Target_Bombed")
+	register_event("TextMsg", "event_round_restart","a","2=#Game_will_restart_in");
+	register_logevent("event_ct_win", 6, "3=CTs_Win", "3=Target_Saved", "3=Bomb_Defused", "3=All_Hostages_Rescued");
+	register_logevent("event_tt_win" , 6, "3=Terrorists_Win", "3=Target_Bombed");
 	register_logevent("event_joined_team", 3, "1=joined team");
 	register_logevent("event_new_round", 3, "2=Spawned_With_The_Bomb");
-	register_logevent("event_freezetime_end", 2, "1=Round_Start") 
-	register_logevent("event_round_end", 2, "1=Round_End") 
+	register_logevent("event_freezetime_end", 2, "1=Round_Start") ;
+	register_logevent("event_round_end", 2, "1=Round_End");
 }
 
 public event_player_score (m, s, id) {
@@ -66,36 +66,30 @@ public event_joined_team () {
 
 public event_drop_item(entity, const model[]) {
 	if (game_is_live())
-		return FMRES_IGNORED 
+		return FMRES_IGNORED;
 
-	static class[10]
-	pev(entity, pev_classname, class, sizeof class - 1)
+	static class[10];
+	pev(entity, pev_classname, class, sizeof class - 1);
 
 	if (equal(class, "weaponbox")) {
-		set_pev(entity, pev_nextthink, get_gametime () + 0.5)
+		set_pev(entity, pev_nextthink, get_gametime () + 0.5);
 	}
 
-	return FMRES_HANDLED
+	return FMRES_HANDLED;
 }
 
 public event_game_description() {
-    new description[32]
-    get_game_description(description, charsmax(description))
+    new description[32];
+    get_game_description(description, charsmax(description));
 
     forward_return(FMV_STRING, description);
 
-    return FMRES_SUPERCEDE
+    return FMRES_SUPERCEDE;
 }
 
 public event_new_round () {
 	restarting = false;
 
-	if (!game_is_started()) {
-		new id = get_loguser_index()
-		client_delete_c4(id);
-
-		return PLUGIN_CONTINUE;
-	}
 	if (!game_is_live())
 		return PLUGIN_CONTINUE;
 
@@ -113,8 +107,8 @@ public event_new_round () {
 			clients_print_money();
 		}
 		case 2: {
-			set_task(0.2, "fnHudMoney", TASK_DISPLAY_INFO, _, _, "b")
-			set_task(float(get_freezetime()), "fnRemoveHudMoney", _, _, _, "a", 1)
+			set_task(0.2, "fnHudMoney", TASK_DISPLAY_INFO, _, _, "b");
+			set_task(float(get_freezetime()), "fnRemoveHudMoney", _, _, _, "a", 1);
 		}
 	}
 
@@ -138,9 +132,7 @@ public event_damage (victim) {
 	attacker = get_user_attacker(victim);
 	damage = read_data(2);
 
-	if (attacker != victim &&
-		is_player_id(attacker) &&
-		is_player_id(victim))
+	if (attacker != victim && is_player_id(attacker) && is_player_id(victim))
 	{
 		dmg_addattack(victim, attacker, damage);
 	}
@@ -185,6 +177,21 @@ public event_ct_win() {
 }
 
 public event_round_end() {
+	if(g_bKnifeRound) { // Переделать
+		new players[32], num;
+		get_players(players, num, "ae", "TERRORIST");
+		
+		if(!num) {
+			chat_print(0, "%L", LANG_SERVER, "PUG_KNIFE_WINCT");
+			set_task(2.0, "vote_win", 0);
+		} else {	        
+			chat_print(0, "%L", LANG_SERVER, "PUG_KNIFE_WINT"); 
+			set_task(2.0, "vote_win", 1);  
+		}    
+		g_bKnifeRound = false;
+		return;
+	}
+
 	if (!game_is_live() || is_restarting())
 		return;
 
@@ -192,7 +199,7 @@ public event_round_end() {
 
 	if (get_cvar_num("pug_dmgmode")) {
 		new iPlayers[MAX_PLAYERS], iNum;
-		get_players(iPlayers, iNum, "ach");
+		get_players(iPlayers, iNum, "ah");
 		
 		for (new i;i < iNum;i++)  {
 			new args[2];
@@ -219,10 +226,9 @@ public event_post_think(const id) {
 	set_pev(id, pev_maxspeed, 0.1)
 
 	// We wait a time to dont overflow client_cmd and lag player
-	if(nextPlayerThink[id] <= get_gametime())
-	{
-		client_cmd(id, "+showscores")
-		nextPlayerThink[id] = get_gametime() + 0.2
+	if(nextPlayerThink[id] <= get_gametime()) {
+		client_cmd(id, "+showscores");
+		nextPlayerThink[id] = get_gametime() + 0.2;
 	}
 
 	return FMRES_SUPERCEDE;
@@ -238,5 +244,5 @@ stock get_loguser_index() {
 }
 
 stock bool:is_restarting () {
-	return restarting
+	return restarting;
 }
