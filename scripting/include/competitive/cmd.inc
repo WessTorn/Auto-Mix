@@ -5,11 +5,11 @@
 #define _cmd_included
 
 stock cmd_init () {
-	register_concmd(".auto", "cmd_auto", PUG_CMD_LVL)
-	register_concmd(".manual", "cmd_manual", PUG_CMD_LVL)
+	register_concmd(".auto", "cmd_auto", PUG_CMD_LVL);
+	register_concmd(".manual", "cmd_manual", PUG_CMD_LVL);
 	register_concmd(".restart", "cmd_restart", PUG_CMD_LVL);
 	register_concmd(".start", "cmd_start", PUG_CMD_LVL);
-	register_concmd(".cancel", "cmd_cancel", PUG_CMD_LVL);
+	register_concmd(".stop", "cmd_cancel", PUG_CMD_LVL);
 	register_concmd(".test", "cmd_test", PUG_CMD_LVL);
 
 	register_concmd(".menu", "cmd_menu", ADMIN_ALL);
@@ -18,10 +18,10 @@ stock cmd_init () {
 	register_concmd(".votekick", "cmd_votekick", ADMIN_ALL);
 	register_concmd(".votepause", "cmd_votepause", ADMIN_ALL);
 
-	register_clcmd("chooseteam", "cmd_chooseteam");
+	//register_clcmd("chooseteam", "cmd_menu");
 	register_clcmd("nightvision", "cmd_menu");
 
-	register_concmd("kill", "block_kill")
+	register_concmd("kill", "block_kill");
 }
 
 public cmd_chooseteam (id) {
@@ -45,13 +45,13 @@ public cmd_start (id, level, cid) {
 		return PLUGIN_CONTINUE;
 
 	if (game_is_started()) {
-		chat_print(id, "%L", LANG_SERVER, "PUG_ACTION_NOTALLOWED")
+		chat_print(id, "%L", LANG_SERVER, "PUG_ACTION_NOTALLOWED");
 		return PLUGIN_HANDLED;
 	}
 
-	new sName[MAX_NAME_LENGTH]
-	get_user_name(id, sName, charsmax(sName))
-	chat_print(0, "%L", LANG_SERVER, "PUG_FORCE_GAME", sName)
+	new sName[MAX_NAME_LENGTH];
+	get_user_name(id, sName, charsmax(sName));
+	chat_print(0, "%L", LANG_SERVER, "PUG_FORCE_GAME", sName);
 
 	PugStart();
 
@@ -67,9 +67,9 @@ public cmd_cancel (id, level, cid) {
 		return PLUGIN_HANDLED;
 	}
 
-	new sName[MAX_NAME_LENGTH]
-	get_user_name(id, sName, charsmax(sName))
-	chat_print(0, "%L", LANG_SERVER, "PUG_FORCE_CANCEL", sName)
+	new sName[MAX_NAME_LENGTH];
+	get_user_name(id, sName, charsmax(sName));
+	chat_print(0, "%L", LANG_SERVER, "PUG_FORCE_CANCEL", sName);
 
 	PugWarmup();
 
@@ -80,8 +80,8 @@ public cmd_manual (id, level, cid) {
 	if (!cmd_access(id, level, cid, 1))
 		return PLUGIN_CONTINUE;
 
-	new sName[MAX_NAME_LENGTH]
-	get_user_name(id, sName, charsmax(sName))
+	new sName[MAX_NAME_LENGTH];
+	get_user_name(id, sName, charsmax(sName));
 	chat_print(0, "%L", LANG_SERVER, "PUG_CHANGE_TO_MANUAL", sName);
 
 	set_server_manual();
@@ -93,8 +93,8 @@ public cmd_auto (id, level, cid) {
 	if (!cmd_access(id, level, cid, 1))
 		return PLUGIN_CONTINUE;
 
-	new sName[MAX_NAME_LENGTH]
-	get_user_name(id, sName, charsmax(sName))
+	new sName[MAX_NAME_LENGTH];
+	get_user_name(id, sName, charsmax(sName));
 	chat_print(0, "%L", LANG_SERVER, "PUG_CHANGE_TO_AUTO", sName);
 
 	set_server_auto();
@@ -114,7 +114,7 @@ public cmd_test (id, level, cid) {
 
 public cmd_menu (id) {
 	pugmenu_start(id);
-	return PLUGIN_HANDLED
+	return PLUGIN_HANDLED;
 }
 
 public cmd_mute (const id, level, cid) {
@@ -123,7 +123,7 @@ public cmd_mute (const id, level, cid) {
 	if (target)
 		client_mute(id, target);
 
-	return PLUGIN_HANDLED
+	return PLUGIN_HANDLED;
 }
 
 public cmd_unmute (const id, level, cid) {
@@ -132,7 +132,7 @@ public cmd_unmute (const id, level, cid) {
 	if (target)
 		client_unmute(id, target);
 
-	return PLUGIN_HANDLED
+	return PLUGIN_HANDLED;
 }
 
 public cmd_votekick (id, level, cid) {
@@ -144,7 +144,7 @@ public cmd_votekick (id, level, cid) {
 	if (target)
 		votekick_start(id, target);
 
-	return PLUGIN_HANDLED
+	return PLUGIN_HANDLED;
 }
 
 public cmd_votepause (id, level, cid) {
@@ -153,7 +153,7 @@ public cmd_votepause (id, level, cid) {
 
 	votepause_start(id);
 
-	return PLUGIN_HANDLED
+	return PLUGIN_HANDLED;
 }
 
 public block_kill () {
@@ -172,9 +172,7 @@ static find_target (id, level, cid) {
 	new target, targetName[32];
 
 	read_argv(1, targetName, charsmax(targetName));
-	target = cmd_target(id, targetName, CMDTARGET_OBEY_IMMUNITY | 
-										CMDTARGET_NO_BOTS |
-										CMDTARGET_ALLOW_SELF);
+	target = cmd_target(id, targetName, CMDTARGET_OBEY_IMMUNITY | CMDTARGET_NO_BOTS | CMDTARGET_ALLOW_SELF);
 
 	if (!target) {
 		chat_print(id, "%L", LANG_SERVER, "PUG_CMD_UNAVAILABLE")
@@ -183,4 +181,3 @@ static find_target (id, level, cid) {
 
 	return target;
 }
-
