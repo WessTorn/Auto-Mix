@@ -15,4 +15,3 @@ public enable_stats(){
 		set_cvar_num("csstats_pause", 0);
 	}
 }
-
