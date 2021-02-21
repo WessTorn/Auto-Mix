@@ -4,46 +4,45 @@
 
 #define _clrates_included
 
-static cvar_minrate
-static cvar_minupdaterate
+static cvar_minrate;
+static cvar_minupdaterate;
 
 public clrates_init() {
 	cvar_minrate = register_cvar("pug_cl_minrate", "10000");
 	cvar_minupdaterate = register_cvar("pug_cl_minupdaterate", "30");
 
-	set_task(30.0, "check_rates", _, _, _, "b")
+	set_task(30.0, "check_rates", _, _, _, "b");
 }
 
 public check_rates() {
 	new players[MAX_PLAYERS], count;
 	get_players(players, count, "ch");
 
-	for (new i=0; i < count; i++) {
-		client_check_rates(players[i])
+	for (new i; i < count; i++) {
+		client_check_rates(players[i]);
 	}
 }
 
 public client_check_rates(id) {
-	query_client_cvar(id, "rate", "check_rate") 
-	query_client_cvar(id, "cl_cmdrate", "check_rate") 
-	query_client_cvar(id, "cl_updaterate", "check_rate") 
+	query_client_cvar(id, "rate", "check_rate");
+	query_client_cvar(id, "cl_cmdrate", "check_rate");
+	query_client_cvar(id, "cl_updaterate", "check_rate");
 }
 
 public check_rate(id, cvar[], value[]) {
 	new minvalue;
 
 	if (equali(cvar, "rate"))
-		minvalue = get_pcvar_num(cvar_minrate)
+		minvalue = get_pcvar_num(cvar_minrate);
 	else if (equali(cvar, "cl_cmdrate") || equali(cvar, "cl_updaterate"))
-		minvalue = get_pcvar_num(cvar_minupdaterate)
+		minvalue = get_pcvar_num(cvar_minupdaterate);
 
 	if (str_to_num(value) >= minvalue)
-		return
+		return;
 
-	new name[32]
-	get_user_name(id, name, charsmax(name))
+	new name[32];
+	get_user_name(id, name, charsmax(name));
 					
-	client_print(0, print_chat, "El jugador %s tiene pocos ^"%s^"", name, cvar)
-	server_cmd("kick #%d ^"%s deben ser %i o mas!^"", get_user_userid(id), cvar, minvalue)
+	client_print(0, print_chat, "Player %s has a bad cvar ^"%s^"!", name, cvar);
+	server_cmd("kick #%d ^"%s deben ser %i o mas!^"", get_user_userid(id), cvar, minvalue);
 }
-
