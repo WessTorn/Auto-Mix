@@ -4,30 +4,35 @@
 
 #define _client_included
 
-stock bool:client_is_player (id)
+stock bool:client_is_player (id) {
 	return TEAM_TERRORIST <= client_get_team(id) <= TEAM_CT;
+}
 
-stock bool:client_is_spectator (id) 
+stock bool:client_is_spectator (id) {
 	return client_get_team(id) == TEAM_SPECTATOR;
+}
 
-stock bool:client_is_terrorist (id)
+stock bool:client_is_terrorist (id) {
 	return client_get_team(id) == TEAM_TERRORIST;
+}
 
-stock bool:client_is_ct (id)
+stock bool:client_is_ct (id) {
 	return client_get_team(id) == TEAM_CT;
+}
 
 stock clients_print_money () {
-	static players[MAX_PLAYERS], count, id
+	static players[MAX_PLAYERS], count, id;
 	get_players(players, count, "ah");
 
 	for (new i; i < count; i++) {
-		id = players[i]
+		id = players[i];
 		client_cmd(id, "say_team $%i", client_get_money(id));
 	}
 }
 
-stock is_player_id (id)
-	return 1 <= id <= MAX_PLAYERS+1;
+stock is_player_id (id) {
+	return 1 <= id <= MAX_PLAYERS + 1;
+}
 
 stock check_team (id, TeamName:team) {
 	if (valid_jointeam(id, team))
@@ -62,8 +67,8 @@ stock bool:valid_jointeam (const id, TeamName:team) {
 	}
 
 	if (team_is_full(new_team)) {
-		chat_print(id, "%L", LANG_SERVER, "PUG_TEAMS_FULL",
-					team_name[new_team]);
+		chat_print(id, "%L", LANG_SERVER, "PUG_TEAMS_FULL", team_name[new_team]);
+		client_cmd(id, "chooseteam");
 		return false;
 	}
 
@@ -72,16 +77,4 @@ stock bool:valid_jointeam (const id, TeamName:team) {
 
 stock user_joined (id) {
 	set_task(5.0, "show_owners", id, _, _, "a", 1);
-
-	#if AMXX_VERSION_NUM < 183
-	new args[2];
-	args[0] = id;
-	set_task(1.0, "send_teaminfo", _, args, charsmax(args), "a", 1);
-	#endif
 }
-
-#if AMXX_VERSION_NUM < 183
-public send_teaminfo (args[])
-	chatcolor_send_teaminfo(args[0]);
-#endif
-
