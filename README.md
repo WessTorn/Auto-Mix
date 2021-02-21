@@ -1,57 +1,62 @@
-# Modo Competitivo 5v5 para Counter Strike 1.6
+# Auto-Mix 5 vs 5 Counter Strike 1.6
 
-Tome lo mejor de varios plugins para hacerlo un poco mas automatico. Por ejemplo, inicia automaticamente al estar 10 jugadores en el servidor, kickea automaticamente a los AFK y muestra el daño que realizaste en una ronda justo luego de morir.
+Данный плагин автоматически запускает микс, когда на сервере находятся 10 игроков, также проверяет АФК и показывает урон, нанесенный вами в раунде сразу после смерти.
 
-## Caracteristicas 
-- Inicio de juego automatico
-- Menu general en la tecla N
-- Pausar el partido
-- Mutear y desmutear
-- Expulsar jugador de la partida (incluso espectadores que esten AFK)
-- DMG automatico en consola
-- Empate disponible y configurable
-- Mantiene puntuaciones al cambio de bando
-- Los vivos pueden leer a los muertos
-- Estadisticas con [CSstatsX SQL](https://github.com/serfreeman1337/csstatsx-sql)
+## Характеристики:
+- Автоматический запуск игры
+- Капитаны
+- Ножевой раунд за выбор стороны
+- Поддержка HLTV
+- Меню на клавишу N
+- Пауза (путем голосования)
+- Мьюты / Анмьюты
+- Кикнуть игрока из игры (путем голосования)
+- Показывает дамаг в консоле
+- Доступная настройка через квары, конфиг
+- Сохраняет очки при переходе на другую сторону
+- Живые могут читать мертвых
+- Статистика [CSstatsX SQL](https://github.com/serfreeman1337/csstatsx-sql)
 
-## Requisitos
+## Требования:
 
-- [Amxmodx 1.8.x](https://www.amxmodx.org/downloads.php)
+- [Amxmodx 1.9.0](https://www.amxmodx.org/downloads-new.php)
+- [Reapi 5.19 (last)](https://dev-cs.ru/resources/73/updates)
+- [ReGameDLL 5.19 (last)](https://dev-cs.ru/resources/67/updates)
 
-## Comandos de chat
+## Команды в чат:
 
-- Administrador<br>
-	.start		- Forza el inicio del pug<br>
-	.cancel		- Forza el final del pug<br>
-	.manual		- El modo iniciara manualmente<br>
-	.auto		- El modo iniciara automaticamente<br>
+- Админ<br>
+	.start		- Принудительно запустить игру<br>
+	.stop		- Принудительно остановить игру<br>
+	.manual		- Включить режим: Вручную<br>
+	.auto		- Включить режим: Автоматический<br>
 
-- Jugador<br>
-	.menu				- Menu de funcionalidades (tecla N)<br>
-	.votekick <nombre>	- Votacion para expulsar a un jugador<br>
-	.votepause			- Votacion para pausar partido<br>
-	.mute <nombre>		- Mutear jugador<br>
-	.unmute <nombre>	- Desmutear jugador<br>
+- Игрок<br>
+	.menu			- Меню (N)<br>
+	.votekick <nombre>	- Голосование за кик<br>
+	.votepause		- Голосование за паузу<br>
+	.mute <nombre>		- Замьютить<br>
+	.unmute <nombre>	- Размьютить<br>
 
-## Configuraciones destacables  (pugconfig.cfg)
+## Настройка плагина (pugconfig.cfg)
 
 | Cvar                 | Default    | Descripción |
 | :------------------- | :--------: | :--------------------------------------------------- |
-| pug_tag              | "[Server]" | Prefix del servidor                                  |
-| pug_owner	           | ""         | Nombre de los lideres del servidor                   |
-| pug_rounds_max       | 30         | Rondas maximas del partido                           |
-| pug_rounds_ot        | 6          | Rondas maximas del overtime                          |
-| pug_allow_tie        | 0          | Activa el empate de la partida                       |
-| pug_show_money       | 1          | Muestra el dinero de los jugadores. <br/>`0` Deshabilitado<br/>`1` Por chat<br/>`2` Por HUD<br/>`3` Por sprites |
-| pug_votepause_time   | 60         | Tiempo (seg) que duran las pausa                     |
-| pug_afktime          | 60         | Tiempo (seg) en que sera kickeado un jugador por afk |
+| pug_tag              | ">" | Префикс микссистемы                                  |
+| pug_owner	           | ""         | Ник админа сервера                   |
+| pug_rounds_max       | 30         | Максимальное количество раундов матча                          |
+| pug_rounds_ot        | 6          | Максимальное количество раундов овертайма                          |
+| pug_show_money       | 1          | Показывать деньги тиммейтов. <br/>`0` Отключено<br/>`1` В чате<br/>`2` В HUD<br/>`3` По спрайтам |
+| pug_votepause_time   | 60         | Время (сек), в течение которого длиться пауза                      |
+| pug_afktime          | 60         | Время (в секундах), в течение которого игрока кикнет за АФК  |
 
-## Cosas por hacer
-- Añadir ronda a cuchillo y el ganador escoja su propio bando
-- Que los espectadores entren automaticamente por orden de llegada
+## Дела, которые необходимо сделать
+- Исправить все баги
+- Зрители входят автоматически в порядке прибытия
 
-## Agradecimientos | Autores de otros plugins
+## Благодарности | Авторы других плагинов 
 
+[Leopoldo Brines - Competitive (Pugmod)](https://github.com/leobrines/pug_for_cs)<br>
 [Sugisaki - Pugmod](https://amxmodx-es.com/Thread-Competitive-Face-it-Pick-Up-Game-PUG)<br>
 [PredatorFlys - Pugmod](https://amxmodx-es.com/Thread-Auto-Mix-YAP-Capitan-resubido)<br>
 [SmileYzn -Pugmod](https://github.com/SmileYzn/CS_PugMod)<br>
