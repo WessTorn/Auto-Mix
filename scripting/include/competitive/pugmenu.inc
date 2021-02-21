@@ -1,10 +1,10 @@
 stock pugmenu_start (id) {
-	new menu = menu_create("Acciones: ", "pugmenu_handler");
+	new menu = menu_create("Меню:", "pugmenu_handler");
 
-	menu_additem(menu, "Pausar juego");
-	menu_additem(menu, "Expulsar jugador");
-	menu_additem(menu, "Mutear");
-	menu_additem(menu, "Desmutear");
+	menu_additem(menu, "Сменить команду");
+	menu_additem(menu, "Пауза");
+	menu_additem(menu, "Кикнуть игрока");
+	menu_additem(menu, "\yАдмин меню");
 
 	menu_display(id, menu);
 }
@@ -27,19 +27,19 @@ public pugmenu_handler (id, menu, item) {
 
 	switch (item) {
 		case 0:
+			client_cmd(id, "jointeam");
+		case 1:
 			if (player_can_vote(id)) {
-			       	if (game_is_live())
+				if (game_is_live())
 					votepause_start(id);
 				else
 					chat_print(id, "%L", LANG_SERVER, "PUG_GAME_NOTSTARTED");
 			}
-		case 1:
+		case 2:
 			if (player_can_vote(id))
 				votekick_select_player_menu(id);
-		case 2:
-			pugmenu_mute(id);
 		case 3:
-			pugmenu_unmute(id);
+			client_cmd(id, "amxmodmenu");
 	}
 
 	return PLUGIN_HANDLED;
