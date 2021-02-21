@@ -3,11 +3,21 @@ static bool:firstround;
 static bool:gamebreak;
 
 stock firsthalf () {
-	g_iStage = STAGE_FIRSTHALF
 	autoready_hide();
+	KnifeRound();
+}
 
-	chat_print(0, "%L", LANG_SERVER, "PUG_STARTING_FIRSTHALF")
+stock liveOnThree () {
+	server_cmd("mp_freezetime 15");
+	chat_print(0, "%L", LANG_SERVER, "PUG_3RESTARTS");
+	set_task(0.1, "taskRR",0,"2",1);
+	set_task(3.1, "taskRR",0,"1",1);
+	set_task(6.1, "taskLive");
+}
 
+public taskLive () {
+	g_iStage = STAGE_FIRSTHALF;
+	chat_print(0, "%L", LANG_SERVER, "PUG_STARTING_FIRSTHALF");
 	halfstart();
 	exec_pugmode();
 	enable_stats();
@@ -17,7 +27,7 @@ stock firsthalf () {
 static secondhalf () {
 	g_iStage = STAGE_SECONDHALF
 
-	chat_print(0, "%L", LANG_SERVER, "PUG_STARTING_SECONDHALF")
+	chat_print(0, "%L", LANG_SERVER, "PUG_STARTING_SECONDHALF");
 
 	halfstart();
 	remove_break();
@@ -29,7 +39,7 @@ static firsthalf_ot () {
 	g_iStage = STAGE_FIRSTOT
 	maxrounds += get_overtime_rounds();
 
-	chat_print(0, "%L", LANG_SERVER, "PUG_STARTING_OVERTIME")
+	chat_print(0, "%L", LANG_SERVER, "PUG_STARTING_OVERTIME");
 
 	halfstart();
 	remove_break();
@@ -40,7 +50,7 @@ static firsthalf_ot () {
 static secondhalf_ot () {
 	g_iStage = STAGE_SECONDOT
 
-	chat_print(0, "%L", LANG_SERVER, "PUG_STARTING_OVERTIME")
+	chat_print(0, "%L", LANG_SERVER, "PUG_STARTING_OVERTIME");
 
 	halfstart();
 	remove_break();
@@ -65,11 +75,11 @@ stock game_finish (WinStatus:status) {
 
 	switch (status) {
 		case WINSTATUS_TERRORISTS:
-			chat_print(0, "%L", LANG_SERVER, "PUG_GAMEOVER_WON", team_name[TEAM_TERRORIST], ttscore, ctscore)
+			chat_print(0, "%L", LANG_SERVER, "PUG_GAMEOVER_WON", team_name[TEAM_TERRORIST], ttscore, ctscore);
 		case WINSTATUS_CTS:
-			chat_print(0, "%L", LANG_SERVER, "PUG_GAMEOVER_WON", team_name[TEAM_CT], ctscore, ttscore)
+			chat_print(0, "%L", LANG_SERVER, "PUG_GAMEOVER_WON", team_name[TEAM_CT], ctscore, ttscore);
 		default:
-			chat_print(0, "%L", LANG_SERVER, "PUG_GAMEOVER_TIED", ctscore, ttscore)
+			chat_print(0, "%L", LANG_SERVER, "PUG_GAMEOVER_TIED", ctscore, ttscore);
 	}
 }
 
@@ -85,13 +95,13 @@ public remove_break() {
 }
 
 bool:is_gamebreak() {
-	return gamebreak
+	return gamebreak;
 }
 
 static start_gamebreak () {
-	gamebreak = true
+	gamebreak = true;
 
-	chat_print(0, "%L", LANG_SERVER, "PUG_GAME_INTERMISSION", get_halftime())
+	chat_print(0, "%L", LANG_SERVER, "PUG_GAME_INTERMISSION", get_halftime());
 
 	set_task(float(get_halftime()), "finish_gamebreak", _, _, _, "a", 1);
 
@@ -147,8 +157,7 @@ stock check_halfend () {
 }
 
 static bool:is_score_tie ()
-	return (teamtt_get_score() == maxrounds/2 &&
-			teamct_get_score() == maxrounds/2);
+	return (teamtt_get_score() == maxrounds/2 && teamct_get_score() == maxrounds/2);
 
 static is_half_end () {
 	new const total_score = teamtt_get_score() + teamct_get_score();
@@ -159,6 +168,6 @@ static is_half_end () {
 	return false;
 }
 
-stock bool:is_firstround ()
+stock bool:is_firstround () {
 	return firstround;
-
+}
