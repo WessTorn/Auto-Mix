@@ -1,21 +1,16 @@
 #include <competitive/index>
 
-#define PLUGIN "Competitive"
-#define VERSION "0.12.4"
-#define AUTHOR "Leopoldo Brines"
+#define PLUGIN "Auto-Mix (Competitive)"
+#define VERSION "0.1"
+#define AUTHOR "Leopoldo Brines" // Changed by WessTorn 
 
-public plugin_init()
-{
+public plugin_init() {
 	register_plugin(PLUGIN, VERSION, AUTHOR);
 	register_dictionary("competitive.txt");
 
-	g_iStage = STAGE_DEAD
+	g_iStage = STAGE_DEAD;
 
-	#if AMXX_VERSION_NUM >= 183
-	g_iMaxClients = MaxClients
-	#else
-	g_iMaxClients = get_maxplayers()
-	#endif
+	g_iMaxClients = MaxClients;
 	
 	utils_init();
 	cvars_init();
@@ -29,22 +24,19 @@ public plugin_init()
 	clrates_init();
 
 	cmd_init();
+	hook_init();
 	event_init();
 
 	// Commands
-	register_clcmd("say", "fnHookSay")
-	register_clcmd("say_team", "fnHookSayTeam")
+	register_clcmd("say", "fnHookSay");
+	register_clcmd("say_team", "fnHookSayTeam");
 
-	set_task(5.0, "PugWarmup", _, _, _, "a", 1)
-	set_task(3.0, "fnPostConfig", _, _, _, "a", 1)
+	set_task(5.0, "PugWarmup", _, _, _, "a", 1);
+	set_task(3.0, "fnPostConfig", _, _, _, "a", 1);
+	register_menucmd(register_menuid("ShowMenuHan"), 3, "handleShowMenu");
 }
 
-#if AMXX_VERSION_NUM < 183
-public plugin_cfg()
-#else
-public OnConfigsExecuted()
-#endif
-{
+public OnConfigsExecuted() {
 	static configfile[40];
 
 	get_lastmaps(g_sLastMaps);
@@ -53,13 +45,11 @@ public OnConfigsExecuted()
 	server_cmd("exec %s", configfile);
 }
 
-public plugin_unpause()
-{
-	PugWarmup()
+public plugin_unpause() {
+	PugWarmup();
 }
 
-public plugin_pause()
-{
+public plugin_pause() {
 	remove_task();
 	autoready_hide();
 }
@@ -67,17 +57,23 @@ public plugin_pause()
 public client_connect (id) {
 	if (user_iskicked(id)) {
 		server_cmd("kick #%i ^"Votekick^"", get_user_userid(id));
-		return
+		return;
 	}
 
-	client_check_rates(id)
+	if(!is_user_hltv(id)) {
+		if (PUG_GetPlayersNum(true) >= get_pug_maxplayers()){
+			server_cmd("kick #%i ^"Сервер заполнен!^"", get_user_userid(id));
+			return;
+		}
+	}
+	client_check_rates(id);
 }
 
 public client_putinserver (id) {
 	if (!is_user_connected(id))
-		return
+		return;
 
-	client_purge_data(id)
+	client_purge_data(id);
 }
 
 public client_purge_data (id) {
@@ -86,13 +82,9 @@ public client_purge_data (id) {
 	dmg_reset_user(id);
 }
 
-#if AMXX_VERSION_NUM < 183
-public client_disconnect (id) {
-#else
 public client_disconnected (id) {
-#endif
 	if (!is_user_connected(id))
-		return
+		return;
 
 	client_purge_data(id)
 
@@ -100,31 +92,31 @@ public client_disconnected (id) {
 		return;
 	if (!game_is_started())
 		autoready_check();
+
 	if (!game_is_live())
 		return;
 
-	new TeamName:iTeam = TeamName:get_user_team(id)
+	new TeamName:iTeam = TeamName:get_user_team(id);
 
-	new iCount = get_teamplayers_count(iTeam) - 1
+	new iCount = get_teamplayers_count(iTeam) - 1;
 	new iAbsencePlayers = get_max_absence_players();
 
 	if (iAbsencePlayers && iCount <= iAbsencePlayers) {
-		chat_print(0, "%L", LANG_SERVER, "PUG_GAME_CANCELED_ABSENCE", iTeam == TEAM_TERRORIST ? g_szTeams2[TEAM_TERRORIST] : g_szTeams2[TEAM_CT])
+		chat_print(0, "%L", LANG_SERVER, "PUG_GAME_CANCELED_ABSENCE", iTeam == TEAM_TERRORIST ? g_szTeams2[TEAM_TERRORIST] : g_szTeams2[TEAM_CT]);
 
 		if (teamct_is_winning())
-			game_finish(WINSTATUS_CTS)
+			game_finish(WINSTATUS_CTS);
 		else if (teamtt_is_winning())
-			game_finish(WINSTATUS_TERRORISTS)
+			game_finish(WINSTATUS_TERRORISTS);
 		else
-			game_finish(WINSTATUS_DRAW)
+			game_finish(WINSTATUS_DRAW);
 	}
 }
 
 // --------------------- Partes del PUG ---------------------
 
-public PugWarmup ()
-{
-	g_iStage = STAGE_WARMUP
+public PugWarmup () {
+	g_iStage = STAGE_WARMUP;
 
 	votekick_reset();
 	votepause_reset();
@@ -136,45 +128,40 @@ public PugWarmup ()
 	autoready_check();
 	remove_break();
 
-	fnRemoveHudMoney()
+	fnRemoveHudMoney();
 
 	exec_warmup();
 }
 
 public PugStart () {
-	g_iStage = STAGE_START
-	g_iVoteId = 0
+	g_iStage = STAGE_START;
+	g_iVoteId = 0;
 
 	autoready_hide();
 
-	fnNextVote()
+	fnNextVote();
 }
 
 // --------------------- Votaciones ---------------------
 
-public fnNextVote()
-{
-	g_iVoteId++
-	switch(g_iVoteId)
-	{
-		case 1:
-		{
+public fnNextVote() {
+	g_iVoteId++;
+	switch(g_iVoteId) {
+		case 1: {
 			if (is_votemap_allowed() && !is_votemap_ready()) {
-				fnStartVoteMap()
+				fnStartVoteMap();
 			} else {
 				set_votemap_ready(false);
 				fnNextVote();
 			}
 		}
-		case 2:
-		{
+		case 2: {
 			if (is_voteteam_allowed())
 				fnStartVoteTeam()
 			else
 				fnNextVote();
 		}
-		default:
-		{
+		default: {
 			show_menu(0, 0, "^n", 1);
 			set_votemap_ready(false);
 			firsthalf();
@@ -186,97 +173,89 @@ public fnStartVoteMap () {
 	g_mMap = maps_create_menu();
 
 	new iPlayers[MAX_PLAYERS], iNum, iPlayer;
-	get_players(iPlayers, iNum, "ch");
+	get_players(iPlayers, iNum, "h");
 	
-	for (new i;i < iNum;i++) 
-	{
+	for (new i;i < iNum;i++) {
 		iPlayer = iPlayers[i];
 
 		if (client_is_player(iPlayer))
 			menu_display(iPlayer, g_mMap);
 	}
 
-	set_task(0.1, "fnVoteListMap", TASK_HUD_VOTE, _, _, "b")
-	set_task(float(get_votedelay()), "fnVoteMapEnd", _, _, _, "a", 1)
+	set_task(0.1, "fnVoteListMap", TASK_HUD_VOTE, _, _, "b");
+	set_task(float(get_votedelay()), "fnVoteMapEnd", _, _, _, "a", 1);
 }
 
-public fnVoteListMap()
-{
-	new count, hud[512], temp
+public fnVoteListMap() {
+	new count, hud[512], temp;
 
-	for (new i = 0 ; i < g_iMapCount; i++)
-	{
+	for (new i = 0 ; i < g_iMapCount; i++) {
 		temp = g_iMapVotes[i];
-		if (temp)
-		{
-			count++
-			format(hud, charsmax(hud), "%s[%i] %s^n", hud, temp, g_sMapNames[i])
+		if (temp) {
+			count++;
+			format(hud, charsmax(hud), "%s[%i] %s^n", hud, temp, g_sMapNames[i]);
 		}
 	}
 
-	if (!count)
-	{	
-		formatex(hud, charsmax(hud), "%L", LANG_SERVER, "PUG_NOVOTES")
+	if (!count) {
+		formatex(hud, charsmax(hud), "%L", LANG_SERVER, "PUG_NOVOTES");
 	}
 
-	show_hudtitle(0, "%L", LANG_SERVER, "PUG_VOTING_MAP")
-	show_hudbody(0, hud)
+	show_hudtitle(0, "%L", LANG_SERVER, "PUG_VOTING_MAP");
+	show_hudbody(0, hud);
 }
 
-public fnMapMenuHandle(const id, iMenu, iItem)
-{
+public fnMapMenuHandle(const id, iMenu, iItem) {
 	if (iItem == MENU_EXIT)
 		return PLUGIN_HANDLED;
 
 	g_iMapVotes[iItem]++;
-	g_iVotesCount++
-	fnVoteListMap()
+	g_iVotesCount++;
+	fnVoteListMap();
 
 	return PLUGIN_HANDLED;
 }
 
-public fnVoteMapEnd()
-{
+public fnVoteMapEnd() {
 	set_votemap_ready(true);
 
-	remove_task(TASK_HUD_VOTE)
+	remove_task(TASK_HUD_VOTE);
 	menu_destroy(g_mMap);
 
 	// Obtener ganador
-	new winner, temp
+	new winner, temp;
 	for (new i = 0 ; i < sizeof(g_iMapVotes) ; i++) {
 		if (temp < g_iMapVotes[i]) {
 			temp = g_iMapVotes[i];
-			winner = i
+			winner = i;
 		}
 	}
 
 	if (!winner) {
-		chat_print(0, "%L", LANG_SERVER, "PUG_MAP_CURRENT")
+		chat_print(0, "%L", LANG_SERVER, "PUG_MAP_CURRENT");
 		fnNextVote();
 		return
 	}
 
-	new sMapName[32]
-	formatex(sMapName, charsmax(sMapName), "%s", g_sMapNames[winner])
+	new sMapName[32];
+	formatex(sMapName, charsmax(sMapName), "%s", g_sMapNames[winner]);
 
-	chat_print(0, "%L", LANG_SERVER, "PUG_MAP_CHANGE", sMapName)
-	set_task(4.0, "votemap_changemap", _, sMapName, charsmax(sMapName), "a", 1)
+	chat_print(0, "%L", LANG_SERVER, "PUG_MAP_CHANGE", sMapName);
+	set_task(4.0, "votemap_changemap", _, sMapName, charsmax(sMapName), "a", 1);
 }
 
-public votemap_changemap (map[])
+public votemap_changemap (map[]) {
 	server_changemap(map);
+}
 
-public fnStartVoteTeam()
-{
-	arrayset(g_iTeamVotes, 0, sizeof(g_iTeamVotes))
-	g_iTeamCount = 0
-	g_mTeam = menu_create("\gVotacion de equipos", "fnTeamMenuHandle")
+public fnStartVoteTeam() {
+	arrayset(g_iTeamVotes, 0, sizeof(g_iTeamVotes));
+	g_iTeamCount = 0;
+	g_mTeam = menu_create("\gГолосование команды:", "fnTeamMenuHandle");
 
-	new sNum[10]
+	new sNum[10];
 
-	for (new i; i < sizeof(g_sTeamNames); i++)
-	{
+	for (new i; i < sizeof(g_sTeamNames); i++) {
 		num_to_str(g_iTeamCount, sNum, charsmax(sNum));
 		menu_additem(g_mTeam, g_sTeamNames[i], sNum);
 		g_iTeamCount++
@@ -285,122 +264,104 @@ public fnStartVoteTeam()
 	menu_setprop(g_mTeam, MPROP_EXIT, MEXIT_NEVER);
 
 	new iPlayers[MAX_PLAYERS], iNum, iPlayer;
-	get_players(iPlayers, iNum, "ch");
+	get_players(iPlayers, iNum, "h");
 
-	for (new i;i < iNum;i++) 
-	{
+	for (new i;i < iNum;i++)  {
 		iPlayer = iPlayers[i];
 
-		if (client_is_player(iPlayer))
-		{
+		if (client_is_player(iPlayer)) {
 			menu_display(iPlayer, g_mTeam);
 		}
 	}
 
-	set_task(0.2, "fnVoteListTeam", TASK_HUD_VOTE, _, _, "b")
-	set_task(float(get_votedelay()), "fnVoteTeamEnd", _, _, _, "a", 1)
+	set_task(0.2, "fnVoteListTeam", TASK_HUD_VOTE, _, _, "b");
+	set_task(float(get_votedelay()), "fnVoteTeamEnd", _, _, _, "a", 1);
 }
 
-public fnVoteListTeam()
-{
-	new count, hud[512], temp
+public fnVoteListTeam() {
+	new count, hud[512], temp;
 
-	for (new i = 0 ; i < g_iTeamCount; i++)
-	{
-		temp = g_iTeamVotes[i]
-		if (temp)
-		{
-			count++
-			format(hud, charsmax(hud), "%s[%i] %s^n", hud, temp, g_sTeamNames[i])
+	for (new i = 0 ; i < g_iTeamCount; i++) {
+		temp = g_iTeamVotes[i];
+		if (temp) {
+			count++;
+			format(hud, charsmax(hud), "%s[%i] %s^n", hud, temp, g_sTeamNames[i]);
 		}
 	}
 
-	if (!count)
-	{	
-		formatex(hud, charsmax(hud), "%L", LANG_SERVER, "PUG_NOVOTES")
+	if (!count) {
+		formatex(hud, charsmax(hud), "%L", LANG_SERVER, "PUG_NOVOTES");
 	}
 
-	show_hudtitle(0, "%L", LANG_SERVER, "PUG_VOTING_TEAM")
-	show_hudbody(0, hud)
+	show_hudtitle(0, "%L", LANG_SERVER, "PUG_VOTING_TEAM");
+	show_hudbody(0, hud);
 }
 
-public fnTeamMenuHandle(const id, iMenu, iItem)
-{
+public fnTeamMenuHandle(const id, iMenu, iItem) {
 	if (iItem == MENU_EXIT)
 		return PLUGIN_HANDLED;
 
-	g_iTeamVotes[iItem]++
-	g_iVotesCount++
+	g_iTeamVotes[iItem]++;
+	g_iVotesCount++;
 
-	fnVoteListTeam()
+	fnVoteListTeam();
 
 	return PLUGIN_HANDLED;
 }
 
-public fnVoteTeamEnd()
-{
-	remove_task(TASK_HUD_VOTE)
+public fnVoteTeamEnd() {
+	remove_task(TASK_HUD_VOTE);
 	menu_destroy(g_mTeam);
 
 	// Obtener ganador
-	new winner, temp
-	for (new i = 0 ; i < sizeof (g_iTeamVotes) ; i++)
-	{
-		if (temp < g_iTeamVotes[i])
-		{
-			temp = g_iTeamVotes[i]
-			winner = i
+	new winner, temp;
+	for (new i = 0 ; i < sizeof (g_iTeamVotes) ; i++) {
+		if (temp < g_iTeamVotes[i]) {
+			temp = g_iTeamVotes[i];
+			winner = i;
 		}
 	}
 
-	chat_print(0, "%L", LANG_SERVER, "PUG_WINNER_CHOOSEN", g_sTeamNames[winner])
+	chat_print(0, "%L", LANG_SERVER, "PUG_WINNER_CHOOSEN", g_sTeamNames[winner]);
 
-	switch (winner)
-	{
-		case 0:
-			fnNextVote(); // Dejar los equipos iguales
-
+	switch (winner) {
+		case 0:	{
+			captain();
+		}
 		case 1: {
 			fnTeamsRandomize(); fnNextVote();
 		}
-
-	}
-}
-
-public fnTeamsRandomize()
-{
-	chat_print(0, "%L", LANG_SERVER, "PUG_RANDOMIZING_TEAMS")
-
-	static Players[32]
-	new playerCount, i, player
-	get_players(Players, playerCount, "ch")
-	
-	for (i=0; i<playerCount; i++)
-	{
-		player = Players[i]
-		
-		switch ( client_get_team(player) )
-		{
-			case TEAM_TERRORIST, TEAM_CT: 
-			{
-				new TeamName:random_team = TeamName:random_num(1, 2)
-
-				if (team_is_full(random_team)) {
-					if (random_team == TEAM_TERRORIST)
-						client_set_team(player, TEAM_TERRORIST)
-					else
-						client_set_team(player, TEAM_CT)
-				}else {
-					client_set_team(player, random_team)
-				}
-				
-			}
+		case 2: {
+			fnNextVote();
 		}
 	}
 }
 
-public fnHudMoney()
-{
+public fnTeamsRandomize() {
+	chat_print(0, "%L", LANG_SERVER, "PUG_RANDOMIZING_TEAMS");
+
+	new Players[MAX_PLAYERS], Num;
+	get_players(Players, Num, "h");
+		
+	for(new i; i < Num; i++) {
+		if(!client_get_team(Players[i])) {
+			Players[i--] = Players[--Num];
+		}
+	}
+	    
+	new Player, Team = random(2) ? 1 : 2;
+	new Random;
+	
+	while(Num) {
+		Random = random(Num);
+		Player = Players[Random];
+		client_set_team(Player,TeamName:Team);
+		Players[Random] = Players[--Num];
+		Team = (Team % 2 + 1);
+	}
+}
+
+public fnHudMoney() {
 	new sMessage[1024], sName[32], iLen, iMoney;
 	new iPlayersTeam[MAX_PLAYERS], iNumTeam, iPlayerTeam;
 
@@ -408,24 +369,22 @@ public fnHudMoney()
 	format(sTitle, charsmax(sTitle), "%L", LANG_SERVER, "PUG_TEAM_MONEY");
 
 	new iPlayers[MAX_PLAYERS], iNum, iPlayer;
-	get_players(iPlayers, iNum, "ch");
+	get_players(iPlayers, iNum, "h");
 
-	for (new i; i < iNum; i++)
-	{
-		iPlayer = iPlayers[i]
+	for (new i; i < iNum; i++) {
+		iPlayer = iPlayers[i];
 
 		if (!client_is_player(iPlayer))
 			continue;
 
-		iLen = 0
-		sMessage[0] = '^0'
+		iLen = 0;
+		sMessage[0] = '^0';
 
 		show_hudtitle(iPlayer, sTitle);
 		get_players(iPlayersTeam, iNumTeam, "eh", client_get_team(iPlayer) == TEAM_TERRORIST ? "TERRORIST" : "CT");
 
-		for (new e; e < iNumTeam; e++)
-		{
-			iPlayerTeam = iPlayersTeam[e]
+		for (new e; e < iNumTeam; e++) {
+			iPlayerTeam = iPlayersTeam[e];
 
 			iMoney = client_get_money(iPlayerTeam);
 			get_user_name(iPlayerTeam, sName, charsmax(sName));
@@ -436,10 +395,9 @@ public fnHudMoney()
 	}
 }
 
-public fnRemoveHudMoney()
-{
+public fnRemoveHudMoney() {
 	if (task_exists(TASK_DISPLAY_INFO))
-		remove_task(TASK_DISPLAY_INFO)
+		remove_task(TASK_DISPLAY_INFO);
 }
 
 // --------------------- Utilidades ---------------------
@@ -448,7 +406,7 @@ public maps_create_menu () {
 	new menu, patch[40];
 	new map[32], mapfile;
 
-	menu = menu_create("\gVotacion de mapa", "fnMapMenuHandle")
+	menu = menu_create("\gВыберите карту:", "fnMapMenuHandle");
 	g_iMapCount = 0;
 	arrayset(g_iMapVotes, 0, sizeof(g_iMapVotes));
 
@@ -475,11 +433,7 @@ public maps_create_menu () {
 			new text[32]
 			formatex(text, charsmax(text), "\d%i. %s", g_iMapCount+1, map)
 
-			#if AMXX_VERSION_NUM >= 183
 			menu_addtext2(menu, text)
-			#else
-			menu_addtext(menu, text)
-			#endif
 		} else {
 			menu_additem(menu, map);
 		}
@@ -492,8 +446,7 @@ public maps_create_menu () {
 	return menu;
 }
 
-public fnHookSay(id)
-{
+public fnHookSay(id) {
 	new szArgs[192];
 	read_args(szArgs, charsmax(szArgs));
 	remove_quotes(szArgs); 
@@ -506,37 +459,31 @@ public fnHookSay(id)
 	iTeam = client_get_team(id);
 	get_user_name(id, sName, charsmax(sName));
 
-	switch (iTeam)
-	{
+	switch (iTeam) {
 		case TEAM_TERRORIST, TEAM_CT:
-			formatex(szMessage, charsmax(szMessage), "^1%s^3%s^1 : %s", is_user_alive(id) ? "" : "*DEAD* ", sName, szArgs)
-
-		default:
-		{
-			if (!is_user_admin(id))
-			{
+			formatex(szMessage, charsmax(szMessage), "^1%s^3%s^1 : %s", is_user_alive(id) ? "" : "*DEAD* ", sName, szArgs);
+		default: {
+			if (!is_user_admin(id)) {
 				chat_print(id, "%L", LANG_SERVER, "PUG_SPEC_DONT_SAY");
 				return PLUGIN_HANDLED;
 			}
 
-			formatex(szMessage, charsmax(szMessage), "^1*ADMIN* ^3%s^1 : %s", sName, szArgs)
+			formatex(szMessage, charsmax(szMessage), "^1*ADMIN* ^3%s^1 : %s", sName, szArgs);
 		}
 	}
 
 	new iPlayers[MAX_PLAYERS], iNum, iPlayer;
-	get_players(iPlayers, iNum, "ch");
+	get_players(iPlayers, iNum, "h");
 	
-	for (new i;i < iNum;i++)
-	{
+	for (new i;i < iNum;i++) {
 		iPlayer = iPlayers[i];
-		fnSendMessage(iPlayer, iTeam == TEAM_TERRORIST ? print_team_red : iTeam == TEAM_CT ? print_team_blue : print_team_grey, szMessage)
+		fnSendMessage(iPlayer, iTeam == TEAM_TERRORIST ? print_team_red : iTeam == TEAM_CT ? print_team_blue : print_team_grey, szMessage);
 	}
 	
 	return PLUGIN_HANDLED;
 }
 
-public fnHookSayTeam(id)
-{
+public fnHookSayTeam(id) {
 	new szArgs[192];
 	read_args(szArgs, charsmax(szArgs));
 	remove_quotes(szArgs); 
@@ -549,38 +496,33 @@ public fnHookSayTeam(id)
 	iTeam = client_get_team(id);
 	get_user_name(id, sName, charsmax(sName));
 
-	switch (iTeam)
-	{
+	switch (iTeam) {
 		case TEAM_TERRORIST:
-			formatex(szMessage, charsmax(szMessage), "^1%s(Terrorista) ^3%s^1 : %s", is_user_alive(id) ? "" : "*DEAD* ", sName, szArgs)
+			formatex(szMessage, charsmax(szMessage), "^1%s(Terrorist) ^3%s^1 : %s", is_user_alive(id) ? "" : "*DEAD* ", sName, szArgs);
 
 		case TEAM_CT:
-			formatex(szMessage, charsmax(szMessage), "^1%s(Antiterrorista) ^3%s^1 : %s", is_user_alive(id) ? "" : "*DEAD* ", sName, szArgs)
+			formatex(szMessage, charsmax(szMessage), "^1%s(Counter-Terrorist) ^3%s^1 : %s", is_user_alive(id) ? "" : "*DEAD* ", sName, szArgs);
 
 		default:
-			formatex(szMessage, charsmax(szMessage), "^1(Espectador) ^3%s^1 : %s", sName, szArgs)
-
+			formatex(szMessage, charsmax(szMessage), "^1(Spectator) ^3%s^1 : %s", sName, szArgs);
 	}
 
 	new iPlayers[MAX_PLAYERS], iNum, iPlayer;
-	get_players(iPlayers, iNum, "ch");
+	get_players(iPlayers, iNum, "h");
 	
-	for (new i;i < iNum; i++)
-	{
+	for (new i;i < iNum; i++) {
 		iPlayer = iPlayers[i];
 
 		if (client_get_team(iPlayer) == iTeam)
-			fnSendMessage(iPlayer, iTeam == TEAM_TERRORIST ? print_team_red : iTeam == TEAM_CT ? print_team_blue : print_team_grey, szMessage)
+			fnSendMessage(iPlayer, iTeam == TEAM_TERRORIST ? print_team_red : iTeam == TEAM_CT ? print_team_blue : print_team_grey, szMessage);
 
 	}
 	
 	return PLUGIN_HANDLED;
 }
 
-public bool:fnCheckCommand (const id, szArgs[192])
-{
-	if ((szArgs[0] == '.') || (szArgs[0] == '!')) 
-	{
+public bool:fnCheckCommand (const id, szArgs[192]) {
+	if ((szArgs[0] == '.') || (szArgs[0] == '!')) {
 		client_cmd(id, szArgs, charsmax(szArgs));
 		return true; 
 	}
@@ -591,42 +533,40 @@ public bool:fnCheckCommand (const id, szArgs[192])
 	return false;
 }
 
-public fnSendMessage(id, color, msg[192])
-{
+public fnSendMessage(id, color, msg[192]) {
 	if (is_msgsound_allowed())
-		client_cmd(id, "spk buttons/lightswitch2")
+		client_cmd(id, "spk buttons/lightswitch2");
 
-	client_print_color2(id, color, msg);
+	client_print_color(id, color, msg);
 }
 
-public fnPostConfig()
-{
+public fnPostConfig() {
 	// Format some string
 	get_prefix(TAG, charsmax(TAG));
 	get_currentmap(g_sCurrentMap, charsmax(g_sCurrentMap));
 	get_serverlang(g_sLang, charsmax(g_sLang));
 
-	format(TAG, charsmax(TAG), "!t%s!y", TAG)
+	format(TAG, charsmax(TAG), "^3%s^1", TAG);
 
-	formatex(g_szTeams[TEAM_UNASSIGNED], charsmax(g_szTeams[]), "%L", LANG_SERVER, "UNASSIGNED")
+	formatex(g_szTeams[TEAM_UNASSIGNED], charsmax(g_szTeams[]), "%L", LANG_SERVER, "UNASSIGNED");
 
-	formatex(g_szTeams[TEAM_TERRORIST], charsmax(g_szTeams[]), "%L", LANG_SERVER, "TERRORISTS")
-	formatex(g_szTeams[TEAM_CT], charsmax(g_szTeams[]), "%L", LANG_SERVER, "CTS")
-	formatex(g_szTeams[TEAM_SPECTATOR], charsmax(g_szTeams[]), "%L", LANG_SERVER, "SPECTATORS")
+	formatex(g_szTeams[TEAM_TERRORIST], charsmax(g_szTeams[]), "%L", LANG_SERVER, "TERRORISTS");
+	formatex(g_szTeams[TEAM_CT], charsmax(g_szTeams[]), "%L", LANG_SERVER, "CTS");
+	formatex(g_szTeams[TEAM_SPECTATOR], charsmax(g_szTeams[]), "%L", LANG_SERVER, "SPECTATORS");
 
-	formatex(g_szTeams2[TEAM_TERRORIST], charsmax(g_szTeams[]), "%L", LANG_SERVER, "TERRORIST")
-	formatex(g_szTeams2[TEAM_CT], charsmax(g_szTeams[]), "%L", LANG_SERVER, "CT")
-	formatex(g_szTeams2[TEAM_SPECTATOR], charsmax(g_szTeams), "%L", LANG_SERVER, "SPECTATOR")
+	formatex(g_szTeams2[TEAM_TERRORIST], charsmax(g_szTeams[]), "%L", LANG_SERVER, "TERRORIST");
+	formatex(g_szTeams2[TEAM_CT], charsmax(g_szTeams[]), "%L", LANG_SERVER, "CT");
+	formatex(g_szTeams2[TEAM_SPECTATOR], charsmax(g_szTeams), "%L", LANG_SERVER, "SPECTATOR");
 
-	formatex(g_sTeamNames[0], charsmax(g_sTeamNames[]), "%L", LANG_SERVER, "PUG_VOTING_NOTSORTED");
-	formatex(g_sTeamNames[1], charsmax(g_sTeamNames[]), "%L", LANG_SERVER, "PUG_VOTING_RANDOM");
+	formatex(g_sTeamNames[0], charsmax(g_sTeamNames[]), "%L", LANG_SERVER, "PUG_VOTING_CAPTAINS");
+	formatex(g_sTeamNames[1], charsmax(g_sTeamNames[]), "%L", LANG_SERVER, "PUG_VOTING_NOTSORTED");
+	formatex(g_sTeamNames[2], charsmax(g_sTeamNames[]), "%L", LANG_SERVER, "PUG_VOTING_RANDOM");
 }
 
-public fnUpdateLastMaps()
-{
+public fnUpdateLastMaps() {
 	// Update last maps
-	formatex(g_sLastMaps[1], charsmax(g_sLastMaps[]), "%s", g_sLastMaps[0])
-	formatex(g_sLastMaps[0], charsmax(g_sLastMaps[]), "%s", g_sCurrentMap)
+	formatex(g_sLastMaps[1], charsmax(g_sLastMaps[]), "%s", g_sLastMaps[0]);
+	formatex(g_sLastMaps[0], charsmax(g_sLastMaps[]), "%s", g_sCurrentMap);
 
 	set_lastmaps(g_sLastMaps);
 }	
