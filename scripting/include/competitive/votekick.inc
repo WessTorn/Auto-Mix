@@ -55,8 +55,7 @@ public votekick_select_player_handler (id, menu, item) {
 
 stock votekick_menucreate (name[]) {
 	static title[100];
-	formatex(title, sizeof(title) -1, "%L", LANG_SERVER,
-	         "PUG_VOTEKICK_TITLE", name);
+	formatex(title, sizeof(title) -1, "%L", LANG_SERVER, "PUG_VOTEKICK_TITLE", name);
 
 	new menu = menu_create(title, "votekick_menuhandler");
 
@@ -116,7 +115,7 @@ stock votekick_start (id, target_id) {
 	args[0] = _:team;
 	args[1] = menu;
 	set_task(get_votekick_delay(), "votekick_finish_task", _, args, sizeof(args), "a", 1);
-	set_task(0.1, "votekick_list_task", TASK_HUD_VOTEKICK, args, sizeof(args), "b")
+	set_task(0.1, "votekick_list_task", TASK_HUD_VOTEKICK, args, sizeof(args), "b");
 
 	team_print(team, "%L para votekick", LANG_SERVER, "PUG_VOTING_STARTED", name);
 }
@@ -137,12 +136,12 @@ stock votekick_list (TeamName:team) {
 	votes_no = votes[team][1];
 
 	if (votes_yes)
-		format(hud, charsmax(hud), "%s[%i] %L^n", hud, votes_yes, LANG_SERVER, "YES")
+		format(hud, charsmax(hud), "%s[%i] %L^n", hud, votes_yes, LANG_SERVER, "YES");
 	if (votes_no)
-		format(hud, charsmax(hud), "%s[%i] %L^n", hud, votes_no, LANG_SERVER, "NO")
+		format(hud, charsmax(hud), "%s[%i] %L^n", hud, votes_no, LANG_SERVER, "NO");
 
 	if (!(votes_yes + votes_no)) 
-		formatex(hud, charsmax(hud), "%L", LANG_SERVER, "PUG_NOVOTES")
+		formatex(hud, charsmax(hud), "%L", LANG_SERVER, "PUG_NOVOTES");
 
 	showt_hudtitle(team, "Votekick");
 	showt_hudbody(team, hud);
@@ -151,12 +150,12 @@ stock votekick_list (TeamName:team) {
 stock votekick_finish (TeamName:team, menu) {
 	is_voting[team] = false;
 
-	remove_task(TASK_HUD_VOTEKICK)
+	remove_task(TASK_HUD_VOTEKICK);
 	menu_destroy(menu);
 	menu_cancel_team(team);
 
 	new minvotes = votekick_minvotes(team);
-	new votes_yes = votes[team][0]
+	new votes_yes = votes[team][0];
 
 	if (votes_yes < minvotes) {
 		team_print(team, "%L", LANG_SERVER, "PUG_VOTING_INSUFFICIENT");
@@ -170,14 +169,14 @@ stock votekick_finish (TeamName:team, menu) {
 
 stock votekick_minvotes(TeamName:team) {
 	new target_user = target[team]
-	new TeamName:target_team = client_get_team(target_user)
+	new TeamName:target_team = client_get_team(target_user);
 
 	if (target_team == team) {
 		return MIN_VOTES;
 	}
 
 	// here, target is spectator
-	return teammates_count[team]-1;
+	return teammates_count[team] - 1;
 }
 
 
@@ -197,7 +196,7 @@ stock user_iskicked (id) {
 static user_kick (id) {
 	// Prevent spectators from being banned from the game
 	if (client_is_player(id))
-		votekick_banuser(id)
+		votekick_banuser(id);
 
 	server_cmd("kick #%i ^"Votekick^"", get_user_userid(id));
 }
@@ -231,13 +230,7 @@ stock bool:votekick_validate (id, target_id) {
 	new TeamName:team = client_get_team(id);
 	new TeamName:target_team = client_get_team(target_id);
 
-	if (!team_can_vote(team) ||
-		is_voting[team] ||
-		team == TEAM_SPECTATOR ||
-	       	team == TEAM_UNASSIGNED ||
-		(team != target_team && target_team != TEAM_SPECTATOR && target_team != TEAM_UNASSIGNED) ||
-		get_user_flags(target_id) & ADMIN_IMMUNITY)
-	{
+	if (!team_can_vote(team) || is_voting[team] || team == TEAM_SPECTATOR || team == TEAM_UNASSIGNED || (team != target_team && target_team != TEAM_SPECTATOR && target_team != TEAM_UNASSIGNED) || get_user_flags(target_id) & ADMIN_IMMUNITY) {
 		return false;
 	}
 
@@ -249,8 +242,9 @@ stock bool:votekick_validate (id, target_id) {
 	return true;
 }
 
-stock votekick_totalvotes (TeamName:team)
+stock votekick_totalvotes (TeamName:team) {
 	return votes[team][0] + votes[team][1];
+}
 
 stock bool:votekick_isready (TeamName:team) {
 	new const total_votes = votekick_totalvotes(team);
@@ -260,4 +254,3 @@ stock bool:votekick_isready (TeamName:team) {
 
 	return false;
 }
-
