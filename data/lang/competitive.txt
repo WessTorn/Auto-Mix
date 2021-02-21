@@ -1,215 +1,115 @@
-[es]
-
-UNASSIGNED = Sin asignar
-
-TERRORISTS = Terroristas
-CTS = Anti-Terroristas
-SPECTATORS = Espectadores
-
-TERRORIST = Terrorista
-CT = Anti-Terrorista
-SPECTATOR = Espectador
-
-PLAYER_MUTED = Jugador muteado.
-PLAYER_UNMUTED = Jugador desmuteado.
-
-PUG_GAME_CANCELED_ABSENCE = Juego cancelado por ausencia de jugadores en el equipo %s.
-PUG_GAME_FORCED = %s forzo el juego
-PUG_GAME_INTERMISSION = %d segundos de descanso para comenzar el proximo tiempo
-PUG_GAME_NOTSTARTED = El partido no ha empezado.
-
-PUG_GAMEOVER_WON = Juego finalizado! Los %s ganaron: %i-%i
-PUG_GAMEOVER_TIED = Juego finalizado! Empate: %i-%i
-PUG_SCORE_TIED = La puntuacion esta empatada: %i-%i
-PUG_SCORE_WINNING = Los %s estan ganando: %i-%i
-
-PUG_TEAM_CHANGING = Cambiando equipos.
-PUG_TEAM_MONEY = Dinero del equipo:
-
-PUG_TEAMS_NOT_CHANGE = No puedes cambiar de equipo mientras el juego esta en progreso.
-PUG_TEAMS_SAMET = Ya estas en este equipo.
-PUG_TEAMS_SPECTATORS = Los espectadores no estan disponibles.
-PUG_TEAMS_AUTO = La seleccion automatica no esta disponible.
-PUG_TEAMS_FULL = El equipo %s esta full.
-PUG_TEAMS_ONCAPTAIN = No puedes cambiar de equipo mientras la votacion de capitanes esta en progreso.
-
-PUG_STARTING_FIRSTHALF = Comenzando el primer tiempo.
-PUG_STARTING_SECONDHALF = Comanzando el segundo tiempo.
-PUG_STARTING_OVERTIME = Comenzando el tiempo extra.
-
-PUG_MAP_CURRENT = Se jugara el mapa actual.
-PUG_MAP_CHANGE = Cambiando mapa a %s...
-
-PUG_WINNER_CHOOSEN = Se escogio %s.
-
-PUG_READY = %s esta listo.
-PUG_NOTREADY = %s no esta listo.
-
-PUG_PLAYERS_READY = Jugadores listos
-PUG_PLAYERS_NOTREADY = Jugadores no listos
-PUG_PLAYERS_MISSING = Faltan %d jugadores
-PUG_PLAYERS_MISSING2 = Falta %d jugador
-
-PUG_ACTION_NOTALLOWED = Accion no permitida en este momento.
-PUG_ACTION_NOTACCESS = No tienes acceso a este comando.
-PUG_WEAPON_NOTALLOWED = Este item no esta permitido.
-
-PUG_DMG_INFO = Heriste a "%s" - %i en %i hits
-PUG_DMG_DIDNTHURT = No heriste a nadie esta ronda.
-
-PUG_RDMG_INFO = Te hirio "%s" - %i en %i hits
-PUG_RDMG_DIDNTHURT = No recibiste daño esta ronda.
-
-PUG_BALANCING_TEAMS = Balanceando los equipos.
-PUG_RANDOMIZING_TEAMS = Randomizando los equipos.
-PUG_CAPTAINS_ARE = Los capitanes son: %s %s - %s %s
-PUG_CAPTAINS_PLAY = Se jugara una ronda a cuchillo entre los capitanes
-PUG_CAPTAINS_AWARD = El ganador sera el primero en escoger y seleccionara el bando a empezar.
-PUG_CAPTAIN_NEW = El nuevo capitan para los %s es %s
-PUG_CAPTAIN_PLAYERS_REQUIRED = Se necesitan al menos %i jugadores para activar el modo capitan.
-PUG_CAPTAIN_CHOOSE = %s escogio %s
-PUG_CAPTAIN_AUTOCHOOSE = %s escogio %s automaticamente
-PUG_CAPTAIN_SIDE = %s empezara en el bando %s
-
-PUG_ADMIN_SELECTED = %s ha sido seleccionado como el moderador para este equipo y tiene la habilidad de .votekick
-
-PUG_VOTEKICK_MAXVOTES = Solo puedes iniciar 3 votaciones.
-PUG_VOTEKICK_KICKED = %s expulsado por votekick.
-PUG_VOTEKICK_TITLE = Expulsar a %s:
-PUG_VOTEKICK_DISABLED = El votekick esta deshabilitado.
-
-PUG_CMD_SPECIFY = Necesitas especificar un jugador.
-PUG_CMD_UNAVAILABLE = No es un objetivo disponible.
-
-PUG_MENU_SELECT = Selecciona:
-
-PUG_VOTING_STARTED = %s inicio votacion. 
-PUG_VOTING_INSUFFICIENT = Votos insuficientes.
-PUG_VOTING_FAILED = Votacion fallida.
-PUG_VOTING_SPEC = Los espectadores no pueden hacer votaciones.
-
-PUG_VOTEPAUSE_TITLE = Pausar el juego?
-PUG_VOTEPAUSE_SUCCESS = El equipo %s pausara el partido.
-PUG_VOTEPAUSE_MAXVOTES = Solo se puede pausar la partida una vez.
-
-PUG_VOTING_MAP = Votacion de mapa
-PUG_VOTING_MAPCURRENT = Jugar este mapa
-PUG_VOTING_TEAM = Votacion de equipos
-PUG_VOTING_BALANCED = Balanceado
-PUG_VOTING_NOTSORTED = Equipos iguales
-PUG_VOTING_CAPTAINS = Capitanes
-PUG_VOTING_RANDOM = Aleatorio
-
-PUG_NOVOTES = Sin votos
-
-PUG_AFKKICKER_CVAR = Cvar pug_afktime %i tiene un valor muy bajo. El valor minimo es %i.
-PUG_AFKKICKER_WARN = Tienes %i segundos para moverte o seras kickeado por AFK.
-PUG_AFKKICKER_KICK = %s fue kickeado por estar AFK por mas de %i segundos.
-PUG_AFKKICKER_KICK2 = Fuiste kickeado por estar AFK por mas de %i segundos
-
-PUG_FORCE_GAME = Admin %s forzo el inicio del juego
-PUG_FORCE_CANCEL = Admin %s cancelo el juego
-PUG_CHANGE_TO_MANUAL = Admin %s cambio el servidor a modo: Manual
-PUG_CHANGE_TO_AUTO = Admin %s cambio el servidor a modo: Automatico
-
-PUG_MODE_MANUAL = Modo del servidor: manual
-PUG_MODE_AUTO = Modo del servidor: automatico
-
-PUG_SPEC_DONT_SAY = Solo los admins pueden escribir en el say de espectador.
-
-[en]
+[ru]
 
 UNASSIGNED = Unassigned
-TERRORISTS = Terrorists
-CTS = Counter-Terrorists
-SPECTATORS = Spectators
 
-TERRORIST = Terrorist
-CT = Counter-Terrorist
-SPECTATOR = Spectator
+TERRORISTS = Террористы
+CTS = Контр-террористы
+SPECTATORS = Зрители
 
-PLAYER_MUTED = Muted player.
-PLAYER_UNMUTED = Unmuted player.
+TERRORIST = Террорист
+CT = Конт-террорист
+SPECTATOR = Зритель
 
-PUG_GAME_CANCELED_ABSENCE = Game canceled due to absence of players in the %s team.
-PUG_GAME_FORCED = %s forced the game.
-PUG_GAME_INTERMISSION = %d secounds rest to start the next half.
+PLAYER_MUTED = Игрок замьютен.
+PLAYER_UNMUTED = Игрок размьютен.
 
-PUG_GAMEOVER_WON = Match over! %s won: %i-%i
-PUG_GAMEOVER_TIED = Match over! Game tied %i-%i
-PUG_SCORE_TIED = Score is tied: %i-%i
-PUG_SCORE_WINNING = %s are winning: %i-%i
+PUG_GAME_CANCELED_ABSENCE = Игра отменена из-за отсутствия игроков в команде ^3%s^1.
+PUG_GAME_INTERMISSION = ^3%d^1 секунд до начала следующей половины игры.
+PUG_GAME_NOTSTARTED = Матч еще не начался.
 
-PUG_TEAM_CHANGING = Changing teams.
-PUG_TEAM_MONEY = Team money
+PUG_GAMEOVER_WON = Игра окончена! Команда ^3%s^1 выйграла: ^3%i^1 - ^3%i
+PUG_GAMEOVER_TIED = Игра окончена! Ничья! ^3%i^1 - ^3%i
+PUG_SCORE_WINNING = (Terrorists) ^3%i^1 - ^3%i^1 (Counter-Terrorists)
 
-PUG_TEAMS_NOT_CHANGE = Cannot switch when the game is started.
-PUG_TEAMS_SAMET = You are already on this team.
-PUG_TEAMS_SPECTATORS = Spectators are not allowed.
-PUG_TEAMS_AUTO = Auto-Select is not allowed.
-PUG_TEAMS_FULL = The %s team is full.
-PUG_TEAMS_ONCAPTAIN = Cannot make a team change while the captain voting is in progress.
+PUG_TEAM_CHANGING = Смена команд.
+PUG_TEAM_MONEY = Деньги команды:
 
-PUG_STARTING_FIRSTHALF = Starting first half.
-PUG_STARTING_SECONDHALF = Starting second half.
-PUG_STARTING_OVERTIME = Starting overtime.
+PUG_TEAMS_NOT_CHANGE = Вы не можете менять команду во время игры.
+PUG_TEAMS_SAMET = Вы уже в этой команде.
+PUG_TEAMS_SPECTATORS = Зрители недоступны.
+PUG_TEAMS_AUTO = Автоматический выбор недоступен.
+PUG_TEAMS_FULL = Команда ^3%s^1 заполнена.
+PUG_TEAMS_ONCAPTAIN = Вы не можете менять команды, пока идет голосование капитанов.
 
-PUG_MAP_CURRENT = The current map will be played.
-PUG_MAP_CHANGE = Changing map to %s...
+PUG_3RESTARTS = Приготовьтесь, начало игры через^3 3^1 рестарта!
 
-PUG_WINNER_CHOOSEN = Was choosen %s.
+PUG_KNIFE_START = Начало ножевого раунда.
+PUG_KNIFE_WINCT = Команда ^3Counter-Terrorists^1 выйграла ножевой раунд
+PUG_KNIFE_WINCT = Команда ^3Terrorists^1 выйграла ножевой раунд
+PUG_KNIFE_SWAP = Команда решила поменяться сторонами
+PUG_KNIFE_STAY = Команда решила остаться
 
-PUG_READY = %s is now ready.
-PUG_NOTREADY = %s is now ready.
+PUG_STARTING_FIRSTHALF = Начало ^3первой^1 половины игры.
+PUG_STARTING_SECONDHALF = Начало ^3второй^1 половины игры.
+PUG_STARTING_OVERTIME = Начало ^3ОверТайма^1.
 
-PUG_PLAYERS_READY = Players ready
-PUG_PLAYERS_NOTREADY = Players not ready
-PUG_PLAYERS_MISSING = Missing %d players
-PUG_PLAYERS_MISSING = Missing %d player
+PUG_MAP_CURRENT = Текущая карта будет сыграна.
+PUG_MAP_CHANGE = Изменение карты на ^3%s^1...
 
-PUG_ACTION_NOTALLOWED = Action not allowed at this time.
-PUG_ACTION_NOTACCESS = You don't have access to this command.
-PUG_WEAPON_NOTALLOWED = This weapon is not allowed.
+PUG_WINNER_CHOOSEN = "%s" Была выбрана.
 
-PUG_DMG_INFO = Damage given to "%s" - %i in %i hits
-PUG_DMG_DIDNTHURT = You didn't hurt anyone in this round.
+PUG_PLAYERS_MISSING = Отсутствует %d игроков
+PUG_PLAYERS_MISSING2 = Отсутствует %d игрока
+PUG_PLAYERS_MISSING3 = Отсутствует %d игрок
+PUG_PLAYERS_MISSING3 = Начало игры
 
-PUG_RDMG_INFO = Damage recieved from "%s" - %i in %i hits
-PUG_RDMG_DIDNTHURT = You didn't get hurt this round.
+PUG_ACTION_NOTALLOWED = На данный момент это действие не разрешено.
+PUG_ACTION_NOTACCESS = У вас нет доступа к этой команде.
 
-PUG_BALANCING_TEAMS = Balancing teams.
-PUG_RANDOMIZING_TEAMS = Randomizing teams.
-PUG_CAPTAINS_ARE = The captains are: %s %s - %s %s
-PUG_CAPTAIN_NEW = The new captain for %s is %s
-PUG_CAPTAIN_PLAYERS_REQUIRED = At least %i players are required to activate captain mode.
-PUG_CAPTAIN_CHOOSE = %s chose %s
-PUG_CAPTAIN_AUTOCHOOSE = %s chose %s automatically.
+PUG_DMG_INFO = Урон, нанесенный в ^3%s^1 - ^3%i^1 in ^3%i^1 hits
+PUG_DMG_DIDNTHURT = Вы никого не убивали в этом раунде.
 
-PUG_ADMIN_SELECTED = %s has been selected as the pug moderator for this team and has the ability to .votekick players.
+PUG_RDMG_INFO = Урон, полученный от ^3%s^1 - ^3%i^1 en ^3%i^1 hits
+PUG_RDMG_DIDNTHURT = Вас никто не поранил в этом раунде.
 
-PUG_VOTEKICK_SPECTATORS = The spectators cant kick
-PUG_VOTEKICK_SPECIFY = You must specify a player
-PUG_VOTEKICK_UNAVAILABLE = That is not an objective available.
-PUG_VOTEKICK_MAXVOTES = You can only start 3 votes
-PUG_VOTEKICK_STARTED = %s started voting to kick %s. Reason: %s
-PUG_VOTEKICK_TIE = Failed voting (tie of votes).
-PUG_VOTEKICK_FAILED = Failed voting (no votes).
-PUG_VOTEKICK_INSUFFICIENT = Failed voting (insufficient votes).
-PUG_VOTEKICK_KICKED = %s kicked. Votes: %d.
-PUG_VOTEKICK_NOTKICKED = Failed voting to kick %s. Votes: %d.
-PUG_VOTEKICK_TITLE = Votekick: %s (Reason: %s)
-PUG_VOTEKICK_NOREASON = No reason
+PUG_RANDOMIZING_TEAMS = Рандомизация команд.
 
-PUG_VOTING_MAP = Map Voting
-PUG_VOTING_MAPCURRENT = Play this map
-PUG_VOTING_TEAM = Team Voting
-PUG_VOTING_BALANCED = Balanced
-PUG_VOTING_NOTSORTED = Same teams
-PUG_VOTING_CAPTAINS = Captains
-PUG_VOTING_RANDOM = Random
-PUG_NOVOTES = No votes
+PUG_CAPTAINS_ARE = Капитаны: ^3%s^1 [T] vs [CT] ^3%s^1
+PUG_CAPTAIN_PLAYERS_REQUIRED = Не менее ^3%i^1 гроков требуется для активации режима капитана.
+PUG_CAPTAIN_CHOOSE = ^3%s^1 выбрал ^3%s^1
+PUG_CAPTAIN_AUTOCHOOSE = ^3%s^1 выбрал ^3%s^1 автоматически
 
-PUG_AFKKICKER_CVAR = Cvar pug_afktime %i is too low. Minimum value is %i.
-PUG_AFKKICKER_WARN = You have %i seconds to move or you will be kicked for being AFK.
-PUG_AFKKICKER_KICK = %s was kicked for being AFK longer than %i seconds.
-PUG_AFKKICKER_KICK2 = You were kicked for being AFK longer than %i seconds.
+PUG_TEAMFULL_START = Команды заполнены, начало игры...
+
+PUG_VOTEKICK_MAXVOTES = Вы можете начать только с^3 3^1 голосов.
+PUG_VOTEKICK_KICKED = ^3%s^1 Начал голосование votekick.
+PUG_VOTEKICK_TITLE = Извлечение в ^3%s^1:
+PUG_VOTEKICK_DISABLED = VoteKick отключен.
+
+PUG_CMD_SPECIFY = Вам нужно указать игрока.
+PUG_CMD_UNAVAILABLE = Недоступная цель.
+
+PUG_MENU_SELECT = Выбрать:
+
+PUG_VOTING_STARTED = ^3%s^1 начал голосование. 
+PUG_VOTING_INSUFFICIENT = Недостаточно голосов.
+PUG_VOTING_FAILED = Неудалось проголосовать.
+PUG_VOTING_SPEC = Зрители не могут голосовать.
+
+PUG_VOTEPAUSE_TITLE = Приостановить игру?
+PUG_VOTEPAUSE_SUCCESS = Команда ^3%s^1 приостоновит матч.
+PUG_VOTEPAUSE_MAXVOTES = Игра может быть приостановлена только один раз.
+
+PUG_VOTING_MAP = Голосование карты
+PUG_VOTING_MAPCURRENT = Текущая карта
+PUG_VOTING_TEAM = Командное голосование
+PUG_VOTING_NOTSORTED = Не менять
+PUG_VOTING_CAPTAINS = Капитаны
+PUG_VOTING_RANDOM = Случайно
+
+PUG_NOVOTES = Нет голосов
+
+PUG_AFKKICKER_CVAR = Квар ^3pug_afktime %i^1 имеет очень низкое значение. Минимальное значение ^3%i^1.
+PUG_AFKKICKER_WARN = У вас есть ^3%i^1 секунд, чтобы двигатся, или вас кикнет за АФК.
+PUG_AFKKICKER_KICK = ^3%s^1 был выгнан за то, что он был AFK больше, чем ^3%i^1 секунд.
+PUG_AFKKICKER_KICK2 =  Вас выгнали за то, что вы были АФК более %i секунд
+
+PUG_FORCE_GAME = Админ ^3%s^1 принудительно начинает игру
+PUG_FORCE_CANCEL = Админ ^3%s^1 отменил игру
+PUG_CHANGE_TO_MANUAL = Админ ^3%s^1 изменил сервер на режим: Вручную
+PUG_CHANGE_TO_AUTO = Админ ^3%s^1 перевел сервер в режим: Автоматический
+
+PUG_MODE_MANUAL = Режим сервера: ^3Ручной
+PUG_MODE_AUTO = Режим сервера: ^3Автоматический
+
+PUG_SPEC_DONT_SAY = Только администраторы могут писать в чате зрителей.
