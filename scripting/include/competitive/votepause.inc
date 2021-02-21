@@ -147,17 +147,21 @@ stock votepause_check (bool:pause_now) {
 	}
 }
 
-stock votepause_reset ()
+stock votepause_reset () {
 	arrayset(pause_limiter, 0, sizeof(pause_limiter));
+}
 
-static Float:_get_votedelay ()
+static Float:_get_votedelay () {
 	return get_pcvar_float(vote_delay);
+}
 
-static get_maxvotes ()
+static get_maxvotes () {
 	return get_pcvar_num(vote_maxvotes);
+}
 
-static get_votetime ()
+static get_votetime () {
 	return get_pcvar_num(vote_time);
+}
 
 stock bool:votepause_validate (id, TeamName:team) {
 	if (is_voting[team] || !team_can_vote(team) || will_pause || in_pause)
@@ -171,8 +175,9 @@ stock bool:votepause_validate (id, TeamName:team) {
 	return true;
 }
 
-stock votepause_totalvotes (TeamName:team)
+stock votepause_totalvotes (TeamName:team) {
 	return votes[team][0] + votes[team][1];
+}
 
 stock bool:votepause_isready (TeamName:team) {
 	new const total_votes = votepause_totalvotes(team);
@@ -182,4 +187,3 @@ stock bool:votepause_isready (TeamName:team) {
 
 	return false;
 }
-
