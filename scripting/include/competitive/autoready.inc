@@ -29,13 +29,18 @@ stock autoready_display (Float:fHoldTime) {
 
 	new iNeed = get_pug_maxplayers() - get_readyplayers();
 
-	set_hudmessage(0, 255, 0, 0.8, 0.07, 0, 0.0, fHoldTime, 0.0, 0.0, 1)
+	set_hudmessage(0, 255, 0, 0.8, 0.07, 0, 0.0, fHoldTime, 0.0, 0.0, 1);
 
-	if (iNeed > 1)
-		show_hudmessage(0, "%L", LANG_SERVER, "PUG_PLAYERS_MISSING", iNeed)
+	if (iNeed >= 5)
+		show_hudmessage(0, "%L", LANG_SERVER, "PUG_PLAYERS_MISSING", iNeed);
+	else if (iNeed >= 2)
+		show_hudmessage(0, "%L", LANG_SERVER, "PUG_PLAYERS_MISSING2", iNeed);
+	else if (iNeed > 1)
+		show_hudmessage(0, "%L", LANG_SERVER, "PUG_PLAYERS_MISSING3", iNeed);
 	else
-		show_hudmessage(0, "%L", LANG_SERVER, "PUG_PLAYERS_MISSING2", iNeed)
+		show_hudmessage(0, "%L", LANG_SERVER, "PUG_PLAYERS_MISSING4", iNeed);
 }
 
-public autoready_keep ()
+public autoready_keep () {
 	autoready_display(999.9);
+}
